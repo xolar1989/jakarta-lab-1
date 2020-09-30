@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="description" content="Simple RPG web application"/>
+        <meta name="keywords" content="RPG"/>
+        <meta name="author" content="Michał (psysiu) Wójcik"/>
+        <title>Simple RPG</title>
+        <link rel="stylesheet" href="../styles.css"/>
+        <link rel="stylesheet" href="character_view.css"/>
+        <script src="../script.js" defer="defer"></script>
+        <script src="character_view.js" defer="defer"></script>
+    </head>
+    <body>
+        <div class="container">
+            <header class="header">
+                <h1>Simple RPG</h1>
+                <form id="loginForm">
+                    <label for="login">Login: </label>
+                    <input id="login" class="ui-control ui-input" name="login"/>
+                    <label for="password">Password:</label>
+                    <input id="password" class="ui-control ui-input" name="password" type="password"/>
+                    <input class="ui-control ui-button" type="submit" value="Login"/>
+                </form>
+                <form id="logoutForm">
+                    Logged as: <span id="username">username</span>
+                    <input class="ui-control ui-button" type="submit" value="Logout"/>
+                </form>
+            </header>
+
+            <nav class="navigation-bar">
+                <ul>
+                    <li><a href="../index.html">main</a></li>
+                    <li><a href="../about/about.html">about</a></li>
+                    <li><a href="../character_list/character_list.html">characters</a></li>
+                </ul>
+            </nav>
+
+            <section class="main-section">
+                <article class="text--justified">
+                    <header><h2><span id="name">character's name</span></h2></header>
+                    <div class="character__grid">
+                        <div class="character__level_profession">
+                            Level <span id="level">1</span> <span id="profession">Bard</span>
+                        </div>
+                        <div class="character__experience">Experience <span id="experience">0</span></div>
+                        <div class="character__health">Life <span id="health">0</span></div>
+                        <div class="character__portrait"><img id="portrait" src="#"/></div>
+                        <div class="character__stat character__strength">Strength <span id="strength">12</span></div>
+                        <div class="character__stat character__constitution">
+                            Constitution <span id="constitution">12</span>
+                        </div>
+                        <div class="character__stat character__charisma">Charisma <span id="charisma">12</span></div>
+                        <div class="character__age">Age <span id="age">18</span></div>
+                        <div class="character__background"><span id="background">History of our brave bard.</span></div>
+                    </div>
+                </article>
+            </section>
+
+            <footer class="footer">
+                <p>Copyright &copy; 2020, Michał (psysiu) Wójcik</p>
+                <p>All character's portraits were created using <a href="http://dmheroes.com">DMHeroes</a> developed by
+                    <a href="https://twitter.com/ChristianOesch">Christian Oesch</a>.</p>
+            </footer>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,77 @@
+GET http://localhost:9080/simple-rpg/api/characters
+Authorization: Basic a2V2aW46dXNlcnVzZXI=
+
+###
+
+GET http://localhost:9080/simple-rpg/api/characters/1
+Authorization: Basic a2V2aW46dXNlcnVzZXI=
+
+###
+
+GET http://localhost:9080/simple-rpg/api/user/characters/
+Authorization: Basic a2V2aW46dXNlcnVzZXI=
+
+###
+
+GET http://localhost:9080/simple-rpg/api/user/characters/1
+Authorization: Basic a2V2aW46dXNlcnVzZXI=
+
+###
+
+GET http://localhost:9080/simple-rpg/api/characters/5
+Authorization: Basic a2V2aW46dXNlcnVzZXI=
+
+###
+
+POST http://localhost:9080/simple-rpg/api/user/characters
+Content-Type: application/json
+Authorization: Basic a2V2aW46dXNlcnVzZXI=
+
+{
+  "name": "Sigrid",
+  "background": "No one special.",
+  "age": 18,
+  "strength": 12,
+  "constitution": 12,
+  "charisma": 12,
+  "profession": "Bard"
+}
+
+###
+
+PUT http://localhost:9080/simple-rpg/api/user/characters/5
+Content-Type: application/json
+Authorization: Basic a2V2aW46dXNlcnVzZXI=
+
+{
+  "name": "Sir Sigrid",
+  "background": "Someone well known.",
+  "age": 30
+}
+
+###
+
+DELETE http://localhost:9080/simple-rpg/api/user/characters/5
+
+###
+
+GET http://localhost:9080/simple-rpg/api/portraits/1
+Authorization: Basic a2V2aW46dXNlcnVzZXI=
+
+###
+
+PUT http://localhost:9080/simple-rpg/api/portraits/1
+Content-Type: multipart/form-data; boundary=boundary
+Authorization: Basic a2V2aW46dXNlcnVzZXI=
+
+--boundary
+Content-Disposition: form-data; name="portrait"; filename="uhlbrecht.png'
+
+< ../../src/main/resources/pl/edu/pg/eti/kask/rpg/configuration/avatar/uhlbrecht.png
+--boundary--
+
+###
+
+GET http://localhost:9080/simple-rpg/api/user
+
+###
