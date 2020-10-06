@@ -1,5 +1,6 @@
 package pl.edu.pg.eti.kask.rpg.user.servlet;
 
+import pl.edu.pg.eti.kask.rpg.servlet.MimeTypes;
 import pl.edu.pg.eti.kask.rpg.user.context.UserContext;
 import pl.edu.pg.eti.kask.rpg.user.dto.GetUserResponse;
 import pl.edu.pg.eti.kask.rpg.user.entity.User;
@@ -60,6 +61,7 @@ public class UserServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String principal = context.getPrincipal();
+        response.setContentType(MimeTypes.APPLICATION_JSON);
         if (principal != null) {
             Optional<User> user = service.find(principal);
             if (user.isPresent()) {

@@ -3,6 +3,7 @@ package pl.edu.pg.eti.kask.rpg.character.servlet;
 import pl.edu.pg.eti.kask.rpg.character.entity.Character;
 import pl.edu.pg.eti.kask.rpg.character.service.CharacterService;
 import pl.edu.pg.eti.kask.rpg.servlet.HttpHeaders;
+import pl.edu.pg.eti.kask.rpg.servlet.MimeTypes;
 import pl.edu.pg.eti.kask.rpg.servlet.ServletUtility;
 
 import javax.inject.Inject;
@@ -135,7 +136,7 @@ public class PortraitServlet extends HttpServlet {
 
         if (character.isPresent()) {
             //Type should be stored in the database but in this project we assume everything to be png.
-            response.addHeader(HttpHeaders.CONTENT_TYPE, "image/png");
+            response.addHeader(HttpHeaders.CONTENT_TYPE, MimeTypes.IMAGE_PNG);
             response.setContentLength(character.get().getPortrait().length);
             response.getOutputStream().write(character.get().getPortrait());
         } else {

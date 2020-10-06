@@ -8,6 +8,7 @@ import pl.edu.pg.eti.kask.rpg.character.entity.Character;
 import pl.edu.pg.eti.kask.rpg.character.service.CharacterService;
 import pl.edu.pg.eti.kask.rpg.character.service.ProfessionService;
 import pl.edu.pg.eti.kask.rpg.servlet.HttpHeaders;
+import pl.edu.pg.eti.kask.rpg.servlet.MimeTypes;
 import pl.edu.pg.eti.kask.rpg.servlet.ServletUtility;
 import pl.edu.pg.eti.kask.rpg.servlet.UrlFactory;
 
@@ -165,6 +166,7 @@ public class CharacterServlet extends HttpServlet {
         Optional<Character> character = characterService.find(id);
 
         if (character.isPresent()) {
+            response.setContentType(MimeTypes.APPLICATION_JSON);
             response.getWriter()
                     .write(jsonb.toJson(GetCharacterResponse.entityToDtoMapper().apply(character.get())));
         } else {
@@ -180,6 +182,7 @@ public class CharacterServlet extends HttpServlet {
      * @throws IOException if an input or output exception occurred
      */
     private void getCharacters(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType(MimeTypes.APPLICATION_JSON);
         response.getWriter()
                 .write(jsonb.toJson(GetCharactersResponse.entityToDtoMapper().apply(characterService.findAll())));
     }
@@ -198,6 +201,7 @@ public class CharacterServlet extends HttpServlet {
         Optional<Character> character = characterService.findForCallerPrincipal(id);
 
         if (character.isPresent()) {
+            response.setContentType(MimeTypes.APPLICATION_JSON);
             response.getWriter()
                     .write(jsonb.toJson(GetCharacterResponse.entityToDtoMapper().apply(character.get())));
         } else {
@@ -213,6 +217,7 @@ public class CharacterServlet extends HttpServlet {
      * @throws IOException if an input or output exception occurred
      */
     private void getUserCharacters(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setContentType(MimeTypes.APPLICATION_JSON);
         response.getWriter()
                 .write(jsonb.toJson(GetCharactersResponse.entityToDtoMapper()
                         .apply(characterService.findAllForCallerPrincipal())));
