@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
+import pl.edu.pg.eti.kask.rpg.character.entity.Character;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -49,6 +50,7 @@ public class User implements Serializable {
     /**
      * User's password.
      */
+    @ToString.Exclude
     private String password;
 
     /**
@@ -59,6 +61,8 @@ public class User implements Serializable {
     /**
      * List of user's characters.
      */
+    @ToString.Exclude//It's common to exclude lists from toString
+    @EqualsAndHashCode.Exclude
     private List<Character> characters;
 
 }

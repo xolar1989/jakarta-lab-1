@@ -20,7 +20,7 @@ import pl.edu.pg.eti.kask.rpg.user.entity.User;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@ToString
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 public class Character extends Creature {
 
@@ -57,6 +57,8 @@ public class Character extends Creature {
     /**
      * Creature's portrait. Images in database are stored as blobs (binary large objects).
      */
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private byte[] portrait;
 
 }
