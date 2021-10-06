@@ -64,7 +64,7 @@ public class CharacterRepository implements Repository<Character, Long> {
      * @return container (can be empty) with character
      */
     public Optional<Character> findByIdAndUser(Long id, User user) {
-        return store.getCharacterStream()
+        return store.findAllCharacters().stream()
                 .filter(character -> character.getUser().equals(user))
                 .filter(character -> character.getId().equals(id))
                 .findFirst()
@@ -78,7 +78,7 @@ public class CharacterRepository implements Repository<Character, Long> {
      * @return list (can be empty) of user's characters
      */
     public List<Character> findAllByUser(User user) {
-        return store.getCharacterStream()
+        return store.findAllCharacters().stream()
                 .filter(character -> character.getUser().equals(user))
                 .map(CloningUtility::clone)
                 .collect(Collectors.toList());

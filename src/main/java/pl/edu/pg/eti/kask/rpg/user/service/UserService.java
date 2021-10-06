@@ -16,18 +16,21 @@ import java.util.Optional;
 public class UserService {
 
     /**
-     * Mock of the database. Should be replaced with repository layer.
+     * Repository for user entity.
      */
     private UserRepository repository;
 
+    /**
+     * @param repository repository for character entity
+     */
     @Inject
     public UserService(UserRepository repository) {
         this.repository = repository;
     }
 
     /**
-     * @param login user's login
-     * @return container with user
+     * @param login existing username
+     * @return container (can be empty) with user
      */
     public Optional<User> find(String login) {
         return repository.find(login);
@@ -45,9 +48,9 @@ public class UserService {
     }
 
     /**
-     * Stores new user in the storage.
+     * Saves new user.
      *
-     * @param user new user
+     * @param user new user to be saved
      */
     public void create(User user) {
         repository.create(user);

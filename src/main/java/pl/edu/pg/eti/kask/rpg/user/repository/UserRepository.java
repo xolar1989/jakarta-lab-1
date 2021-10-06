@@ -61,7 +61,9 @@ public class UserRepository implements Repository<User, String> {
      * @return container (can be empty) with user
      */
     public Optional<User> findByLoginAndPassword(String login, String password) {
-        return store.findUser(login, password);
+        return store.findAllUsers().stream()
+                .filter(user -> user.getLogin().equals(login) && user.getPassword().equals(password))
+                .findFirst();
     }
 
 }

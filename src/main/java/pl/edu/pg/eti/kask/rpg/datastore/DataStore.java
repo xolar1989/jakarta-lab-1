@@ -46,7 +46,9 @@ public class DataStore {
      * @return list (can be empty) of all professions
      */
     public synchronized List<Profession> findAllProfessions() {
-        return new ArrayList<>(professions);
+        return professions.stream()
+                .map(CloningUtility::clone)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -55,7 +57,7 @@ public class DataStore {
      * @param name name of the profession
      * @return container (can be empty) with profession if present
      */
-    public Optional<Profession> findProfession(String name) {
+    public synchronized Optional<Profession> findProfession(String name) {
         return professions.stream()
                 .filter(profession -> profession.getName().equals(name))
                 .findFirst()
@@ -74,7 +76,7 @@ public class DataStore {
                     throw new IllegalArgumentException(
                             String.format("The profession name \"%s\" is not unique", profession.getName()));
                 },
-                () -> professions.add(profession));
+                () -> professions.add(CloningUtility.clone(profession)));
     }
 
     /**
@@ -83,7 +85,9 @@ public class DataStore {
      * @return list (can be empty) of all characters
      */
     public synchronized List<Character> findAllCharacters() {
-        return characters.stream().map(CloningUtility::clone).collect(Collectors.toList());
+        return characters.stream()
+                .map(CloningUtility::clone)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -105,8 +109,10 @@ public class DataStore {
      * @param character new character
      */
     public synchronized void createCharacter(Character character) throws IllegalArgumentException {
-        character.setId(findAllCharacters().stream().mapToLong(Character::getId).max().orElse(0) + 1);
-        characters.add(character);
+        character.setId(findAllCharacters().stream()
+                .mapToLong(Character::getId)
+                .max().orElse(0) + 1);
+        characters.add(CloningUtility.clone(character));
     }
 
     /**
@@ -119,7 +125,7 @@ public class DataStore {
         findCharacter(character.getId()).ifPresentOrElse(
                 original -> {
                     characters.remove(original);
-                    characters.add(character);
+                    characters.add(CloningUtility.clone(character));
                 },
                 () -> {
                     throw new IllegalArgumentException(
@@ -156,18 +162,14 @@ public class DataStore {
     }
 
     /**
-     * Seeks for single user using login and password. Can be use in authentication module.
+     * Seeks for all users.
      *
-     * @param login    user's login
-     * @param password user's password
-     * @return container (can be empty) with user
+     * @return collection of all users
      */
-    public synchronized Optional<User> findUser(String login, String password) throws IllegalArgumentException {
+    public synchronized List<User> findAllUsers() {
         return users.stream()
-                .filter(user -> user.getLogin().equals(login))
-                .filter(users -> users.getPassword().equals(password))
-                .findFirst()
-                .map(CloningUtility::clone);
+                .map(CloningUtility::clone)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -182,15 +184,7 @@ public class DataStore {
                     throw new IllegalArgumentException(
                             String.format("The user login \"%s\" is not unique", user.getLogin()));
                 },
-                () -> users.add(user));
+                () -> users.add(CloningUtility.clone(user)));
     }
 
-    /**
-     * Get stream to be used (for filtering, sorting, etc) in repositories.
-     *
-     * @return character's stream
-     */
-    public Stream<Character> getCharacterStream() {
-        return characters.stream();
-    }
 }
