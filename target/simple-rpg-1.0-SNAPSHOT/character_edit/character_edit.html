@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="description" content="Simple RPG web application"/>
+        <meta name="keywords" content="RPG"/>
+        <meta name="author" content="Michał (psysiu) Wójcik"/>
+        <title>Simple RPG</title>
+        <link rel="stylesheet" href="../styles.css"/>
+        <link rel="stylesheet" href="charater_edit.css"/>
+        <script src="../script.js" defer="defer"></script>
+        <script src="character_edit.js" defer="defer"></script>
+    </head>
+    <body>
+        <div class="container">
+            <header class="header">
+                <h1>Simple RPG</h1>
+                <form id="loginForm">
+                    <label for="login">Login: </label>
+                    <input id="login" class="ui-control ui-input" name="login"/>
+                    <label for="password">Password:</label>
+                    <input id="password" class="ui-control ui-input" name="password" type="password"/>
+                    <input class="ui-control ui-button" type="submit" value="Login"/>
+                </form>
+                <form id="logoutForm">
+                    Logged as: <span id="username">username</span>
+                    <input class="ui-control ui-button" type="submit" value="Logout"/>
+                </form>
+            </header>
+
+            <nav class="navigation-bar">
+                <ul>
+                    <li><a href="../index.html">main</a></li>
+                    <li><a href="../about/about.html">about</a></li>
+                    <li><a href="../character_list/character_list.html">characters</a></li>
+                </ul>
+            </nav>
+
+            <section class="main-section">
+                <article class="text--justified">
+                    <header><h2>Edit character info</h2></header>
+                    <form class="character__form" id="infoForm">
+                        <label for="name">Name:</label>
+                        <input class="ui-control ui-input" id="name" name="name"/>
+                        <label for="age">Age:</label>
+                        <input class="ui-control ui-input" id="age" name="age" type="number"/>
+                        <label for="background">Background:</label>
+                        <textarea class="ui-control" id="background" name="background"></textarea>
+                        <input class="ui-control ui-button" type="submit" name="Update"/>
+                    </form>
+                </article>
+
+                <article class="text--justified">
+                    <header><h2>Edit character portrait</h2></header>
+                    <form class="character__form" id="portraitForm">
+                        <label for="portrait">Portrait:</label>
+                        <input class="ui-control ui-button" id="portrait" name="portrait" type="file"/>
+                        <input class="ui-control ui-button" type="submit" value="Upload"/>
+                    </form>
+                </article>
+            </section>
+
+            <footer class="footer">
+                <p>Copyright &copy; 2020, Michał (psysiu) Wójcik</p>
+                <p>All character's portraits were created using <a href="http://dmheroes.com">DMHeroes</a> developed by
+                    <a href="https://twitter.com/ChristianOesch">Christian Oesch</a>.</p>
+            </footer>
+        </div>
+    </body>
+</html>

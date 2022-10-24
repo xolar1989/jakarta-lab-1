@@ -3,4 +3,10 @@
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
+    <env-entry>
+        <env-entry-name>image.dir</env-entry-name>
+        <env-entry-type>java.lang.String</env-entry-type>
+        <env-entry-value>C:\Users\karol\imagelab1</env-entry-value>
+    </env-entry>
+
 </web-app>

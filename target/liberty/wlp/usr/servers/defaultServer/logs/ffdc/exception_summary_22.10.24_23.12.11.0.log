@@ -1,0 +1,6 @@
+
+ Index  Count  Time of first Occurrence    Time of last Occurrence     Exception SourceId ProbeId
+------+------+---------------------------+---------------------------+---------------------------
+     0      1 24.10.2022, 23:12:11:416 CEST 24.10.2022, 23:12:11:416 CEST java.lang.UnsupportedOperationException com.ibm.ws.webcontainer.filter.WebAppFilterManager.invokeFilters 1105
+                                                                            - C:\Users\karol\Desktop\projekty-ogolne\jakarta-lab-1\target\liberty\wlp\usr\servers\defaultServer\logs\ffdc\ffdc_22.10.24_23.12.11.0.log
+------+------+---------------------------+---------------------------+---------------------------

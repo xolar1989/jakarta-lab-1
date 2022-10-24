@@ -1,0 +1,16 @@
+pl\edu\pg\eti\kask\rpg\social\network\servlet\UserImageServlet$Patterns.class
+pl\edu\pg\eti\kask\rpg\social\network\servlet\UserImageServlet$Parameters.class
+pl\edu\pg\eti\kask\rpg\servlet\UrlFactory.class
+pl\edu\pg\eti\kask\rpg\repository\Repository.class
+pl\edu\pg\eti\kask\rpg\social\network\servlet\UserServlet$Parameters.class
+pl\edu\pg\eti\kask\rpg\social\network\servlet\UserServlet.class
+pl\edu\pg\eti\kask\rpg\social\network\servlet\UserServlet$Patterns.class
+pl\edu\pg\eti\kask\rpg\social\network\servlet\UserImageServlet.class
+pl\edu\pg\eti\kask\rpg\servlet\MimeTypes.class
+pl\edu\pg\eti\kask\rpg\serialization\CloningUtility.class
+pl\edu\pg\eti\kask\rpg\servlet\AuthMethods.class
+pl\edu\pg\eti\kask\rpg\digest\Sha256Utility.class
+pl\edu\pg\eti\kask\rpg\social\network\servlet\UserImageServlet$Paths.class
+pl\edu\pg\eti\kask\rpg\social\network\servlet\UserServlet$Paths.class
+pl\edu\pg\eti\kask\rpg\servlet\HttpHeaders.class
+pl\edu\pg\eti\kask\rpg\servlet\ServletUtility.class
