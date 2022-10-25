@@ -34,7 +34,7 @@ public class UserCommentService {
     }
 
     public void createCommentForUser(Comment comment, User user){
-        commentRepository.create(user.getId(),comment.getContent());
+        commentRepository.create(user.getId(),comment);
     }
 
     public List<Comment> getUserComments(User user){
@@ -45,6 +45,10 @@ public class UserCommentService {
         System.out.println("dmksmndkkd");
         System.out.println(commentId);
         commentRepository.delete(commentId);
+    }
+
+    public void updateComment(Comment comment){
+        commentRepository.update(comment);
     }
 
     public Optional<Comment> findById(Integer id){

@@ -2,6 +2,7 @@ package pl.edu.pg.eti.kask.rpg;
 
 import lombok.SneakyThrows;
 import pl.edu.pg.eti.kask.rpg.social.network.entity.Comment;
+import pl.edu.pg.eti.kask.rpg.social.network.entity.CommentType;
 import pl.edu.pg.eti.kask.rpg.social.network.entity.User;
 import pl.edu.pg.eti.kask.rpg.social.network.service.UserCommentService;
 import pl.edu.pg.eti.kask.rpg.social.network.service.UserService;
@@ -39,16 +40,19 @@ public class InitData {
 
         Comment comment1 = Comment.builder()
                 .content("fajny komentarz")
+                .type(CommentType.HATE_COMMENT)
                 .build();
 
 
         Comment comment2 = Comment.builder()
                 .content("lorem ipsum")
+                .type(CommentType.NORMAL_COMMENT)
                 .build();
 
 
         Comment comment3 = Comment.builder()
                 .content("eikdmkmksdlsmdksd")
+                .type(CommentType.HATE_COMMENT)
                 .build();
 
         User user2 = User.builder()

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/WEB-INF/template/main.xhtml">
+
+    <f:metadata>
+        <f:viewParam name="id" value="#{commentUpdate.commentId}" required="true"/>
+        <f:event type="preRenderView" listener="#{commentUpdate.init}"/>
+    </f:metadata>
+
+
+    <ui:define name="content">
+        <h:outputStylesheet library="character" name="css/character_create.css"/><!-- Automatically relocated to head. -->
+        <h:panelGroup layout="block">
+            <article class="text--justified">
+                <header><h2>Edit Comment - basic informatin</h2></header>
+                <h:form class="character__form">
+                    <h:button class="ui-control ui-button" value="Previous" disabled="true"/>
+
+
+                    <h:outputLabel for="content" value="content:"/>
+                    <h:inputText class="ui-control ui-input" id="content" value="#{commentUpdate.updateCommentModel.content}"/>
+
+                    <h:outputLabel for="commentType" value="Type:"/>
+                    <h:selectOneRadio id="commentType" value="#{commentUpdate.updateCommentModel.type}"
+                                      layout="pageDirection">
+                        <f:selectItems var="commentType" value="#{commentUpdate.commentTypes}" itemValue="#{commentType}"
+                                       itemLabel="#{commentType.type}" itemLabelEscaped="false"/>
+                    </h:selectOneRadio>
+
+
+                    <h:commandButton class="ui-control ui-button" value="Send"
+                                     action="#{commentUpdate.updateComment()}"/>
+                </h:form>
+            </article>
+
+            <!--            <article class="text&#45;&#45;justified">-->
+            <!--                <header><h2>Edit character portrait</h2></header>-->
+            <!--                <h:form class="character__form" enctype="multipart/form-data">-->
+            <!--                    <h:outputLabel for="portrait" value="Portrait:"/>-->
+            <!--                    <h:inputFile class="ui-control ui-button" id="portrait" value="#{characterCreate.portrait}"/>-->
+            <!--                    <h:commandButton class="ui-control ui-button" value="Upload" action="#{characterCreate.uploadAction}"/>-->
+            <!--                </h:form>-->
+            <!--            </article>-->
+        </h:panelGroup>
+    </ui:define>
+
+</ui:composition>

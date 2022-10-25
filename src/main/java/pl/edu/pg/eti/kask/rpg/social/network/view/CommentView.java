@@ -10,6 +10,7 @@ import pl.edu.pg.eti.kask.rpg.social.network.service.UserCommentService;
 
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -32,8 +33,14 @@ public class CommentView implements Serializable {
     @Getter
     private CommentModel commentModel;
 
+    @Inject
+    public CommentView(UserCommentService userCommentService) {
+        this.userCommentService = userCommentService;
+    }
+
     public void init() throws IOException {
 
+        System.out.println(commentId);
         Optional<Comment> comment = userCommentService.findById(commentId);
         if (comment.isPresent()) {
             this.commentModel = CommentModel.entityToModelMapper().apply(comment.get());

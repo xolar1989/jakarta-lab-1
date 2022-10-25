@@ -6,19 +6,24 @@
                 template="/WEB-INF/template/main.xhtml">
 
     <f:metadata>
-        <f:viewParam name="id" value="#{userView.id}" required="true"/>
-        <f:viewAction action="#{userView.init()}"/>
+        <f:viewParam name="id" value="#{commentView.commentId}" required="true"/>
+        <f:viewAction action="#{commentView.init()}"/>
     </f:metadata>
 
     <ui:define name="content">
         <h:outputStylesheet library="character" name="css/character_view.css"/>
         <h:panelGroup layout="block">
             <article class="text--justified">
-                <header><h2><h:outputText value="#{userView.userModel.getName()}"/></h2></header>
+                <header><h2><h:outputText value="#{commentView.commentModel.id}"/></h2></header>
                 <div class="character__grid">
                     <div class="character__level_profession">
                         <p>
-                            <span style="font-weight: bold; margin-right: 20px">Login:</span> <h:outputText class="fs-4" value="#{userView.userModel.getLogin()}"/>
+                            <span style="font-weight: bold; margin-right: 20px">Content:</span> <h:outputText class="fs-4" value="#{commentView.commentModel.content}"/>
+                        </p>
+                    </div>
+                    <div class="character__experience">
+                        <p>
+                            <span style="font-weight: bold; margin-right: 20px">Type:</span> <h:outputText class="fs-4" value="#{commentView.commentModel.commentTypeModel}"/>
                         </p>
                     </div>
                     <div class="character__portrait">

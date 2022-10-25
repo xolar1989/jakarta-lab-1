@@ -24,4 +24,6 @@ public class Comment implements Serializable {
     private String content;
 
     private Integer createdById;
+
+    private CommentType type;
 }

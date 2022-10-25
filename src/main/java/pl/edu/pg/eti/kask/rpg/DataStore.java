@@ -3,6 +3,7 @@ package pl.edu.pg.eti.kask.rpg;
 import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.rpg.serialization.CloningUtility;
 import pl.edu.pg.eti.kask.rpg.social.network.entity.Comment;
+import pl.edu.pg.eti.kask.rpg.social.network.entity.CommentType;
 import pl.edu.pg.eti.kask.rpg.social.network.entity.User;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -45,7 +46,7 @@ public class DataStore {
                 .map(CloningUtility::clone);
     }
 
-    public synchronized void createComment(Integer userId, String content) {
+    public synchronized void createComment(Integer userId, Comment commentK) {
         findUserById(userId).ifPresentOrElse(
                 user -> {
                     User userClone = CloningUtility.clone(user);
@@ -55,8 +56,9 @@ public class DataStore {
                                             .stream().mapToInt(Comment::getId)
                                             .max().orElse(0) + 1
                             )
-                            .content(content)
+                            .content(commentK.getContent())
                             .createdById(userClone.getId())
+                            .type(commentK.getType())
                             .build();
                     List<Integer> commentsCopy = findCommentsByUserId(userId)
                             .stream().map(Comment::getId).collect(Collectors.toList());

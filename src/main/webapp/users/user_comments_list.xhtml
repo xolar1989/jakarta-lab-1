@@ -25,16 +25,16 @@
                     </h:column>
                     <h:column>
                         <f:facet name="header">VIEW</f:facet>
-                        <h:link outcome="/character/character_edit.xhtml" value="view">
-                            <f:param name="commentId" value="#{comment.getId()}"/>
+                        <h:link outcome="/users/comment_view.xhtml" value="view">
+                            <f:param name="id" value="#{comment.getId()}"/>
                         </h:link>
                     </h:column>
-<!--                    <h:column>-->
-<!--                        <f:facet name="header">EDIT</f:facet>-->
-<!--                        <h:link outcome="/character/character_edit.xhtml" value="edit">-->
-<!--                            <f:param name="id" value="#{character.id}"/>-->
-<!--                        </h:link>-->
-<!--                    </h:column>-->
+                    <h:column>
+                        <f:facet name="header">EDIT</f:facet>
+                        <h:link outcome="/users/comment_edit.xhtml" value="edit">
+                            <f:param name="id" value="#{comment.getId()}"/>
+                        </h:link>
+                    </h:column>
                     <h:column>
                         <f:facet name="header">DELETE</f:facet>
                         <h:form rendered="true">
@@ -42,6 +42,12 @@
                                              action="#{userComments.deleteAction(comment)}"/>
                         </h:form>
                     </h:column>
+                    <f:facet name="footer">
+
+                        <h:link outcome="/users/comment_create.xhtml" value="Create new comment">
+                            <f:param name="id" value="#{userComments.userId}"/>
+                        </h:link>
+                    </f:facet>
                 </h:dataTable>
             </article>
         </h:panelGroup>
