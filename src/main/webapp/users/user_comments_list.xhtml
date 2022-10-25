@@ -5,40 +5,41 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 template="/WEB-INF/template/main.xhtml">
 
+    <f:metadata>
+        <f:viewParam name="id" value="#{userComments.userId}" required="true"/>
+        <f:viewAction action="#{userComments.init()}"/>
+    </f:metadata>
+
     <ui:define name="content">
         <h:panelGroup layout="block">
             <article class="text--justified">
                 <header><h2>Characters</h2></header>
-                <h:dataTable value="#{usersList.usersModel.users}" var="user" styleClass="data-table">
+                <h:dataTable value="#{userComments.userCommentsModel.comments}" var="comment" styleClass="data-table">
                     <h:column>
                         <f:facet name="header">ID</f:facet>
-                        <h:outputText value="#{user.getId()}"/>
+                        <h:outputText value="#{comment.getId()}"/>
                     </h:column>
                     <h:column>
-                        <f:facet name="header">NAME</f:facet>
-                        <h:outputText value="#{user.getName()}"/>
-                    </h:column>
-                    <h:column>
-                        <f:facet name="header">LOGIN</f:facet>
-                        <h:outputText value="#{user.getLogin()}"/>
+                        <f:facet name="header">CONTENT</f:facet>
+                        <h:outputText value="#{comment.getContent()}"/>
                     </h:column>
                     <h:column>
                         <f:facet name="header">VIEW</f:facet>
-                        <h:link outcome="/users/user_view.xhtml" value="view">
-                            <f:param name="id" value="#{user.getId()}"/>
+                        <h:link outcome="/character/character_edit.xhtml" value="view">
+                            <f:param name="commentId" value="#{comment.getId()}"/>
                         </h:link>
                     </h:column>
-                    <h:column>
-                        <f:facet name="header">COMMENTS</f:facet>
-                        <h:link outcome="/users/user_comments_list.xhtml" value="comments">
-                            <f:param name="id" value="#{user.getId()}"/>
-                        </h:link>
-                    </h:column>
+<!--                    <h:column>-->
+<!--                        <f:facet name="header">EDIT</f:facet>-->
+<!--                        <h:link outcome="/character/character_edit.xhtml" value="edit">-->
+<!--                            <f:param name="id" value="#{character.id}"/>-->
+<!--                        </h:link>-->
+<!--                    </h:column>-->
                     <h:column>
                         <f:facet name="header">DELETE</f:facet>
-                        <h:form>
+                        <h:form rendered="true">
                             <h:commandButton styleClass="ui-button ui-control" value="delete"
-                                             action="#{usersList.deleteAction()}"/>
+                                             action="#{userComments.deleteAction(comment)}"/>
                         </h:form>
                     </h:column>
                 </h:dataTable>

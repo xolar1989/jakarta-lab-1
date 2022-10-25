@@ -23,5 +23,5 @@ public class Comment implements Serializable {
 
     private String content;
 
-    private Post post;
+    private Integer createdById;
 }

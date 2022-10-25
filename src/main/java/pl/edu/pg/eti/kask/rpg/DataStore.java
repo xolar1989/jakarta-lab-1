@@ -2,6 +2,7 @@ package pl.edu.pg.eti.kask.rpg;
 
 import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.rpg.serialization.CloningUtility;
+import pl.edu.pg.eti.kask.rpg.social.network.entity.Comment;
 import pl.edu.pg.eti.kask.rpg.social.network.entity.User;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -26,6 +27,88 @@ public class DataStore {
      */
     private Set<User> users = new HashSet<>();
 
+
+    private Set<Comment> comments = new HashSet<>();
+
+
+    public synchronized List<Comment> findCommentsByUserId(Integer userId) {
+        return comments.stream()
+                .filter(comment -> comment.getCreatedById().equals(userId))
+                .map(CloningUtility::clone)
+                .collect(Collectors.toList());
+    }
+
+    public synchronized Optional<Comment> findCommentByCommentId(Integer commentId) {
+        return comments.stream()
+                .filter(comment -> comment.getId().equals(commentId))
+                .findFirst()
+                .map(CloningUtility::clone);
+    }
+
+    public synchronized void createComment(Integer userId, String content) {
+        findUserById(userId).ifPresentOrElse(
+                user -> {
+                    User userClone = CloningUtility.clone(user);
+                    Comment comment = Comment.builder()
+                            .id(
+                                    findAllComment()
+                                            .stream().mapToInt(Comment::getId)
+                                            .max().orElse(0) + 1
+                            )
+                            .content(content)
+                            .createdById(userClone.getId())
+                            .build();
+                    List<Integer> commentsCopy = findCommentsByUserId(userId)
+                            .stream().map(Comment::getId).collect(Collectors.toList());
+                    commentsCopy.add(comment.getId());
+                    userClone.setCommentsIds(commentsCopy);
+                    updateUser(userClone);
+                    comments.add(comment);
+                },
+                () -> {
+                    throw new IllegalArgumentException("User with given id doesn't exist");
+                }
+        );
+    }
+
+
+    public synchronized void deleteComment(Integer commentId){
+        findCommentByCommentId(commentId)
+                .ifPresentOrElse(
+                        comment -> {
+                            if(findUserById(comment.getCreatedById()).isEmpty()){
+                                throw new IllegalStateException("delete comment error");
+                            }
+
+                            User userCopy = CloningUtility.clone(findUserById(comment.getCreatedById()).get());
+                            List<Comment> userComments = findCommentsByUserId(userCopy.getId());
+                            userComments.remove(comment);
+                            userCopy.setCommentsIds(userComments.stream().map(Comment::getId).collect(Collectors.toList()));
+                            updateUser(userCopy);
+
+                            comments.remove(comment);
+                        },
+                        () -> {   throw new IllegalArgumentException("User with given id doesn't exist"); }
+                );
+    }
+
+    public synchronized void updateComment(Comment comment){
+        findCommentByCommentId(comment.getId()).ifPresentOrElse(
+                original -> {
+                    comments.remove(original);
+                    comments.add(CloningUtility.clone(comment));
+                },
+                () -> {
+                    throw new IllegalArgumentException(
+                            String.format("The comment with id \"%d\" does not exist", comment.getId()));
+                });
+    }
+
+    public synchronized List<Comment> findAllComment() {
+        return comments.stream()
+                .map(CloningUtility::clone)
+                .collect(Collectors.toList());
+    }
 
     /**
      * Seeks for single user.
@@ -90,7 +173,7 @@ public class DataStore {
                 .map(CloningUtility::clone);
     }
 
-
+    //TODO
     public synchronized void deleteUser(Integer id) throws IllegalArgumentException {
         findUserById(id).ifPresentOrElse(
                 original -> users.remove(original),

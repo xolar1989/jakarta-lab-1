@@ -57,6 +57,10 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public List<User> findAllUsers(){
+        return repository.findAll();
+    }
+
 
     public Optional<User> findById(Integer id) {
         return repository.findById(id);

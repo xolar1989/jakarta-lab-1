@@ -49,7 +49,7 @@ public class User implements Serializable {
      */
     private String email;
 
-    private List<Comment> comments;
+    private List<Integer> commentsIds;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
