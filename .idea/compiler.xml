@@ -6,12 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="simple-rpg" />
+        <module name="jakarta-lab-123" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="jakarta-lab-1" target="11" />
-      <module name="simple-rpg" target="11" />
+      <module name="jakarta-lab-123" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>
