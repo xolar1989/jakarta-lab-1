@@ -49,7 +49,7 @@ public class UserRepository implements Repository<User, String> {
 
     @Override
     public void delete(User entity) {
-        throw new UnsupportedOperationException("Not implemented.");
+        store.deleteUser(entity.getId());
     }
 
     @Override

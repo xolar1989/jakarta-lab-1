@@ -7,6 +7,8 @@ import pl.edu.pg.eti.kask.rpg.social.network.entity.CommentType;
 import pl.edu.pg.eti.kask.rpg.social.network.entity.User;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.swing.event.ListDataEvent;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -26,10 +28,10 @@ public class DataStore {
     /**
      * Set of all users.
      */
-    private Set<User> users = new HashSet<>();
+    private List<User> users = new ArrayList<>();
 
 
-    private Set<Comment> comments = new HashSet<>();
+    private List<Comment> comments = new ArrayList<>();
 
 
     public synchronized List<Comment> findCommentsByUserId(Integer userId) {
@@ -74,11 +76,11 @@ public class DataStore {
     }
 
 
-    public synchronized void deleteComment(Integer commentId){
+    public synchronized void deleteComment(Integer commentId) {
         findCommentByCommentId(commentId)
                 .ifPresentOrElse(
                         comment -> {
-                            if(findUserById(comment.getCreatedById()).isEmpty()){
+                            if (findUserById(comment.getCreatedById()).isEmpty()) {
                                 throw new IllegalStateException("delete comment error");
                             }
 
@@ -90,11 +92,13 @@ public class DataStore {
 
                             comments.remove(comment);
                         },
-                        () -> {   throw new IllegalArgumentException("User with given id doesn't exist"); }
+                        () -> {
+                            throw new IllegalArgumentException("User with given id doesn't exist");
+                        }
                 );
     }
 
-    public synchronized void updateComment(Comment comment){
+    public synchronized void updateComment(Comment comment) {
         findCommentByCommentId(comment.getId()).ifPresentOrElse(
                 original -> {
                     comments.remove(original);
@@ -175,13 +179,25 @@ public class DataStore {
                 .map(CloningUtility::clone);
     }
 
+    public synchronized List<User> findUserByIdToDelete(Integer id) {
+        return users.stream()
+                .filter(user -> user.getId().equals(id))
+                .collect(Collectors.toList());
+    }
+
+
+
     //TODO
     public synchronized void deleteUser(Integer id) throws IllegalArgumentException {
-        findUserById(id).ifPresentOrElse(
-                original -> users.remove(original),
-                () -> {
-                    throw new IllegalArgumentException(
-                            String.format("The user with id \"%d\" does not exist", id));
-                });
+        if(findUserByIdToDelete(id).size() >0){
+            List<User> toRemove = findUserByIdToDelete(id);
+
+            System.out.println(toRemove);
+            toRemove.get(0).getCommentsIds().forEach(commentId -> deleteComment(commentId));
+            User toDelete = users.stream().filter(user -> user.getId().equals(id)).findFirst().get();
+            users.remove(toDelete);
+
+            System.out.println(toRemove);
+        }
     }
 }

@@ -2,6 +2,7 @@ package pl.edu.pg.eti.kask.rpg.social.network.service;
 
 import lombok.NoArgsConstructor;
 import pl.edu.pg.eti.kask.rpg.social.network.dto.GetUserResponse;
+import pl.edu.pg.eti.kask.rpg.social.network.dto.GetUserTest;
 import pl.edu.pg.eti.kask.rpg.social.network.entity.User;
 import pl.edu.pg.eti.kask.rpg.social.network.repository.UserRepository;
 
@@ -9,6 +10,7 @@ import javax.annotation.Resource;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.servlet.http.Part;
+import javax.servlet.http.PushBuilder;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -49,6 +51,10 @@ public class UserService {
         return repository.find(login);
     }
 
+    public void delete(User user){
+        repository.delete(user);
+    }
+
 
     public List<GetUserResponse> findAll() {
         return repository.findAll()
@@ -59,6 +65,21 @@ public class UserService {
 
     public List<User> findAllUsers(){
         return repository.findAll();
+    }
+
+    public void updateUser(GetUserResponse infoToUpdate,Integer id){
+        repository.findById(id)
+                        .ifPresent(user -> {
+                            User newUser = User.builder()
+                                    .id(user.getId())
+                                    .email(infoToUpdate.getEmail())
+                                    .name(infoToUpdate.getName())
+                                    .login(infoToUpdate.getLogin())
+                                    .commentsIds(user.getCommentsIds())
+                                    .password(user.getPassword())
+                                    .build();
+                            repository.update(newUser);
+                        });
     }
 
 

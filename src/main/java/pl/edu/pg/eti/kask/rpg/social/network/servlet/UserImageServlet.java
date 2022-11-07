@@ -28,7 +28,7 @@ public class UserImageServlet extends HttpServlet {
     }
 
     public static class Paths {
-        public static final String IMAGES = "/api/images";
+        public static final String IMAGES = "/api2/images";
     }
 
     public static class Patterns {

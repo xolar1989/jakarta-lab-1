@@ -12,6 +12,7 @@ import javax.enterprise.context.Initialized;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 @ApplicationScoped
 public class InitData {
@@ -81,6 +82,7 @@ public class InitData {
                 .email("email@dd3")
                 .name("andrew")
                 .image(getResourceAsByteArray("configuration/avatar/calvian.png"))
+                .commentsIds(new ArrayList<>())
                 .build();
 
         User user4 = User.builder()
@@ -88,6 +90,7 @@ public class InitData {
                 .email("email@d4")
                 .name("drake")
                 .image(getResourceAsByteArray("configuration/avatar/eloise.png"))
+                .commentsIds(new ArrayList<>())
                 .build();
 
         userService.create(user1);
