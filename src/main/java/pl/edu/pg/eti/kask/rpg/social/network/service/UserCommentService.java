@@ -33,26 +33,35 @@ public class UserCommentService {
         this.commentRepository = commentRepository;
     }
 
-    public void createCommentForUser(Comment comment, User user){
-        commentRepository.create(user.getId(),comment);
+    public void createCommentForUser(Comment comment, User user) {
+        commentRepository.create(user.getId(), comment);
     }
 
-    public List<Comment> getUserComments(User user){
+    public List<Comment> getUserComments(User user) {
         return commentRepository.findUserComments(user.getId());
     }
 
-    public void deleteComment(Integer commentId){
+    public Optional<Comment> getUserComment(User user, Integer commentId) {
+        return getUserComments(user).stream()
+                .filter(comment -> comment.getId().equals(commentId))
+                .findFirst();
+    }
+
+    public void deleteComment(Integer commentId) {
         System.out.println("dmksmndkkd");
         System.out.println(commentId);
         commentRepository.delete(commentId);
     }
 
-    public void updateComment(Comment comment){
+    public void updateComment(Comment comment) {
         commentRepository.update(comment);
     }
 
-    public Optional<Comment> findById(Integer id){
+    public Optional<Comment> findById(Integer id) {
         return commentRepository.find(id);
     }
 
+    public List<Comment> findAllComments() {
+        return commentRepository.findAllComments();
+    }
 }

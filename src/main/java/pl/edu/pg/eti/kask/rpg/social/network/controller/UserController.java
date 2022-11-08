@@ -45,6 +45,10 @@ public class UserController {
         this.service = service;
     }
 
+    @Inject
+    public void setCommentService(UserCommentService commentService) {
+        this.commentService = commentService;
+    }
 
     @GET
     @Path("/usersTest")
@@ -60,6 +64,15 @@ public class UserController {
                                 .login(user.getLogin())
                                 .build()
                         ).collect(Collectors.toList()))
+                .build();
+    }
+
+    @GET
+    @Path("/comments")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllComments(){
+        return Response
+                .ok(commentService.findAllComments())
                 .build();
     }
 

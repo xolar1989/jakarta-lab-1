@@ -44,6 +44,10 @@ public class CommentRepository {
         store.updateComment(entity);
     }
 
+    public List<Comment> findAllComments() {
+        return store.findAllComments();
+    }
+
     public List<Comment> findUserComments(Integer userId){
         return store.findCommentsByUserId(userId);
     }

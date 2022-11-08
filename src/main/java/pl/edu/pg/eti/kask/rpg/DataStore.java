@@ -140,6 +140,12 @@ public class DataStore {
                 .collect(Collectors.toList());
     }
 
+    public synchronized List<Comment> findAllComments() {
+        return comments.stream()
+                .map(CloningUtility::clone)
+                .collect(Collectors.toList());
+    }
+
     /**
      * Stores new user.
      *
@@ -186,10 +192,9 @@ public class DataStore {
     }
 
 
-
     //TODO
     public synchronized void deleteUser(Integer id) throws IllegalArgumentException {
-        if(findUserByIdToDelete(id).size() >0){
+        if (findUserByIdToDelete(id).size() > 0) {
             List<User> toRemove = findUserByIdToDelete(id);
 
             System.out.println(toRemove);
