@@ -28,7 +28,7 @@ public class CreateCommentModel {
             Supplier<User> userSupplier) {
         return model -> Comment.builder()
                 .content(model.content)
-                .createdById(userSupplier.get().getId())
+                .user(userSupplier.get())
                 .build();
     }
 

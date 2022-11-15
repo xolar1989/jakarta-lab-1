@@ -8,6 +8,13 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import java.io.Serializable;
 
 @Getter
@@ -17,13 +24,22 @@ import java.io.Serializable;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode
+@Entity
+@Table(name = "comments")
 public class Comment implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Integer id;
 
     private String content;
 
-    private Integer createdById;
+    /**
+     * Owner of this character.
+     */
+    @ManyToOne
+    @JoinColumn(name ="user")
+    private User user;
 
     private CommentType type;
 }

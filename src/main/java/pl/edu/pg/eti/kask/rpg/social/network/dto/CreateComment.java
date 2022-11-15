@@ -32,7 +32,7 @@ public class CreateComment implements Serializable {
     public static BiFunction<CreateComment, User, Comment> dtoToEntityMapper() {
         return (request, user) -> Comment.builder()
                 .content(request.getContent())
-                .createdById(user.getId())
+                .user(user)
                 .type(CommentType.fromString(request.getType()))
                 .build();
     }

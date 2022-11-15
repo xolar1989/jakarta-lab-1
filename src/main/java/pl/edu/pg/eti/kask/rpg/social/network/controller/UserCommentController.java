@@ -1,6 +1,7 @@
 package pl.edu.pg.eti.kask.rpg.social.network.controller;
 
 import pl.edu.pg.eti.kask.rpg.social.network.dto.CreateComment;
+import pl.edu.pg.eti.kask.rpg.social.network.dto.GetCommentResponse;
 import pl.edu.pg.eti.kask.rpg.social.network.entity.Comment;
 import pl.edu.pg.eti.kask.rpg.social.network.entity.CommentType;
 import pl.edu.pg.eti.kask.rpg.social.network.entity.User;
@@ -18,6 +19,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Path("")
 public class UserCommentController {
@@ -51,7 +53,9 @@ public class UserCommentController {
         Optional<User> user = service.findById(id);
         if (user.isPresent()) {
             return Response
-                    .ok(commentService.getUserComments(user.get()))
+                    .ok(commentService.getUserComments(user.get()).stream()
+                            .map(comment -> GetCommentResponse.entityToDtoMapper().apply(comment))
+                            .collect(Collectors.toList()))
                     .build();
         } else {
             return Response
@@ -70,7 +74,7 @@ public class UserCommentController {
             Optional<Comment> comment = commentService.getUserComment(user.get(), commentId);
             if (comment.isPresent()) {
                 return Response
-                        .ok(comment.get())
+                        .ok(GetCommentResponse.entityToDtoMapper().apply(comment.get()))
                         .build();
             } else {
                 return Response
@@ -87,7 +91,7 @@ public class UserCommentController {
     @PUT
     @Path("users/{userid}/comments/{commentid}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response updateUserComment(@PathParam("userid") Integer userId, @PathParam("commentid") Integer commentId,CreateComment updateComment) {
+    public Response updateUserComment(@PathParam("userid") Integer userId, @PathParam("commentid") Integer commentId, CreateComment updateComment) {
 
         Optional<User> user = service.findById(userId);
         if (user.isPresent()) {
@@ -98,7 +102,7 @@ public class UserCommentController {
                 commentWillBeUpdated.setId(comment.get().getId());
                 commentService.updateComment(commentWillBeUpdated);
                 return Response
-                        .ok(commentWillBeUpdated)
+                        .accepted()
                         .build();
             } else {
                 return Response
@@ -146,7 +150,7 @@ public class UserCommentController {
         Optional<User> user = service.findById(userId);
         if (user.isPresent()) {
             Comment comment = CreateComment.dtoToEntityMapper().apply(createComment, user.get());
-            commentService.createCommentForUser(comment, user.get());
+            commentService.createCommentForUser(comment);
             return Response
                     .ok(comment)
                     .build();
@@ -155,8 +159,8 @@ public class UserCommentController {
                     .status(Response.Status.NOT_FOUND)
                     .build();
         }
-    }
 
+    }
 
 
 }

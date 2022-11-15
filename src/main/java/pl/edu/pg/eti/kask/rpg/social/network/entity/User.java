@@ -9,6 +9,13 @@ import lombok.Setter;
 import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
@@ -24,8 +31,15 @@ import java.util.List;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @ToString
 @EqualsAndHashCode
+@Entity
+@Table(name = "users")
 public class User implements Serializable {
 
+    /**
+     * User's login.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Integer id;
 
     /**
@@ -49,7 +63,10 @@ public class User implements Serializable {
      */
     private String email;
 
-    private List<Integer> commentsIds;
+    @ToString.Exclude//It's common to exclude lists from toString
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Comment> comments;
 
     @ToString.Exclude
     @EqualsAndHashCode.Exclude

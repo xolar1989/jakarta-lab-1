@@ -1,73 +1,70 @@
 package pl.edu.pg.eti.kask.rpg.social.network.repository;
 
-import pl.edu.pg.eti.kask.rpg.DataStore;
+import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.rpg.repository.Repository;
 import pl.edu.pg.eti.kask.rpg.social.network.entity.User;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
+import javax.enterprise.context.RequestScoped;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Repository for User entity. Repositories should be used in business layer (e.g.: in services).
  */
-@Dependent
-public class UserRepository implements Repository<User, String> {
+@RequestScoped
+@Log
+public class UserRepository implements Repository<User, Integer> {
 
     /**
      * Underlying data store. In future should be replaced with database connection.
      */
-    private DataStore store;
-
     /**
-     * @param store data store
+     * Connection with the database (not thread safe).
      */
-    @Inject
-    public UserRepository(DataStore store) {
-        this.store = store;
+    private EntityManager em;
+
+    @PersistenceContext
+    public void setEm(EntityManager em) {
+        this.em = em;
     }
 
     @Override
-    public Optional<User> find(String id) {
-        return store.findUser(id);
+    public Optional<User> find(Integer id) {
+        log.info(String.format("EntityManager for %s %s find", this.getClass(), em));
+        return Optional.ofNullable(em.find(User.class, id));
     }
 
     public Optional<User> findById(Integer id){
-        return store.findUserById(id);
+        return Optional.ofNullable(em.find(User.class, id));
     }
 
     @Override
     public List<User> findAll() {
-        return store.findAllUsers();
+        return em.createQuery("select u from User u", User.class).getResultList();
     }
 
     @Override
     public void create(User entity) {
-        store.createUser(entity);
+        log.info(String.format("EntityManager for %s %s create", this.getClass(), em));
+        em.persist(entity);
     }
 
     @Override
     public void delete(User entity) {
-        store.deleteUser(entity.getId());
+        em.remove(em.find(User.class, entity.getId()));
     }
 
     @Override
     public void update(User entity) {
-        store.updateUser(entity);
+        em.merge(entity);
     }
 
-    /**
-     * Seeks for single user using login and password. Can be use in authentication module.
-     *
-     * @param login    user's login
-     * @param password user's password (hash)
-     * @return container (can be empty) with user
-     */
-    public Optional<User> findByLoginAndPassword(String login, String password) {
-        return store.findAllUsers().stream()
-                .filter(user -> user.getLogin().equals(login) && user.getPassword().equals(password))
-                .findFirst();
+    @Override
+    public void detach(User entity) {
+        em.detach(entity);
     }
+
 
 }

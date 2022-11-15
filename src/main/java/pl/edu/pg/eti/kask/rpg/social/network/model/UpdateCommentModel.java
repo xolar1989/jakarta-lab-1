@@ -28,10 +28,10 @@ public class UpdateCommentModel {
     private CommentTypeModel type;
 
     public static Function<UpdateCommentModel, Comment> modelToEntityMapper(
-            Supplier<Integer> userSupplier) {
+            Supplier<User> userSupplier) {
         return model -> Comment.builder()
                 .content(model.content)
-                .createdById(userSupplier.get())
+                .user(userSupplier.get())
                 .type(CommentType.fromString(model.type.getType()))
                 .build();
     }

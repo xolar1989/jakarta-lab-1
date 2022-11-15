@@ -66,10 +66,11 @@ public class CommentUpdate implements Serializable {
         ((HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false)).invalidate();
         String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
 
+        Comment fromDatabase = userCommentService.findById(commentId).orElseThrow();
+
         System.out.println(updateCommentModel);
         Comment comment = UpdateCommentModel
-                .modelToEntityMapper(() -> userCommentService.findById(commentId).get()
-                        .getCreatedById())
+                .modelToEntityMapper(() -> userService.findById(fromDatabase.getUser().getId()).get())
                 .apply(updateCommentModel);
         comment.setId(commentId);
         userCommentService.updateComment(comment);

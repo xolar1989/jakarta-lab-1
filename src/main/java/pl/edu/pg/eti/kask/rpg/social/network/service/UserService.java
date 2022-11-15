@@ -11,6 +11,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.servlet.http.Part;
 import javax.servlet.http.PushBuilder;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -43,14 +44,8 @@ public class UserService {
         this.repository = repository;
     }
 
-    /**
-     * @param login existing username
-     * @return container (can be empty) with user
-     */
-    public Optional<User> find(String login) {
-        return repository.find(login);
-    }
 
+    @Transactional
     public void delete(User user){
         repository.delete(user);
     }
@@ -67,18 +62,14 @@ public class UserService {
         return repository.findAll();
     }
 
+    @Transactional
     public void updateUser(GetUserResponse infoToUpdate,Integer id){
         repository.findById(id)
                         .ifPresent(user -> {
-                            User newUser = User.builder()
-                                    .id(user.getId())
-                                    .email(infoToUpdate.getEmail())
-                                    .name(infoToUpdate.getName())
-                                    .login(infoToUpdate.getLogin())
-                                    .commentsIds(user.getCommentsIds())
-                                    .password(user.getPassword())
-                                    .build();
-                            repository.update(newUser);
+                            user.setEmail(infoToUpdate.getEmail());
+                            user.setName(infoToUpdate.getName());
+                            user.setLogin(infoToUpdate.getLogin());
+                            repository.update(user);
                         });
     }
 
@@ -88,21 +79,11 @@ public class UserService {
     }
 
     /**
-     * Seeks for single user using login and password. Can be use in authentication module.
-     *
-     * @param login    user's login
-     * @param password user's password (hash)
-     * @return container (can be empty) with user
-     */
-    public Optional<User> find(String login, String password) {
-        return repository.findByLoginAndPassword(login, password);
-    }
-
-    /**
      * Saves new user.
      *
      * @param user new user to be saved
      */
+    @Transactional
     public void create(User user) {
         repository.create(user);
     }

@@ -2,6 +2,7 @@ package pl.edu.pg.eti.kask.rpg.social.network.controller;
 
 
 import pl.edu.pg.eti.kask.rpg.social.network.dto.CreateUserRequest;
+import pl.edu.pg.eti.kask.rpg.social.network.dto.GetCommentResponse;
 import pl.edu.pg.eti.kask.rpg.social.network.dto.GetUserResponse;
 import pl.edu.pg.eti.kask.rpg.social.network.dto.GetUserTest;
 import pl.edu.pg.eti.kask.rpg.social.network.dto.GetUsersResponse;
@@ -71,8 +72,12 @@ public class UserController {
     @Path("/comments")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllComments(){
+        System.out.println(commentService.findAllComments());
         return Response
-                .ok(commentService.findAllComments())
+                .ok(commentService.findAllComments().stream()
+                        .map(comment -> GetCommentResponse.entityToDtoMapper().apply(comment))
+                        .collect(Collectors.toList())
+                )
                 .build();
     }
 
@@ -133,6 +138,7 @@ public class UserController {
                     .build();
         }
     }
+
 
     @PUT
     @Path("/users/{id}")

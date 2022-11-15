@@ -1,54 +1,61 @@
 package pl.edu.pg.eti.kask.rpg.social.network.repository;
 
-import pl.edu.pg.eti.kask.rpg.DataStore;
+import lombok.extern.java.Log;
 import pl.edu.pg.eti.kask.rpg.repository.Repository;
 import pl.edu.pg.eti.kask.rpg.social.network.entity.Comment;
-import pl.edu.pg.eti.kask.rpg.social.network.entity.CommentType;
-import pl.edu.pg.eti.kask.rpg.social.network.entity.User;
 
-import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
+import javax.enterprise.context.RequestScoped;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Optional;
 
-@Dependent
-public class CommentRepository {
+@RequestScoped
+@Log
+public class CommentRepository implements Repository<Comment,Integer> {
 
     /**
      * Underlying data store. In future should be replaced with database connection.
      */
-    private DataStore store;
+    /**
+     * Connection with the database (not thread safe).
+     */
+    private EntityManager em;
 
-    @Inject
-    public CommentRepository(DataStore store) {
-        this.store = store;
+    @PersistenceContext
+    public void setEm(EntityManager em) {
+        this.em = em;
     }
 
+
+    @Override
     public Optional<Comment> find(Integer id) {
-        return store.findCommentByCommentId(id);
+        return Optional.ofNullable(em.find(Comment.class, id));
     }
 
     public List<Comment> findAll() {
-        return null;
+        return em.createQuery("select c from Comment c", Comment.class).getResultList();
     }
 
-    public void create(Integer userId, Comment comment) {
-        store.createComment(userId, comment);
+    @Override
+    public void create(Comment entity) {
+        em.persist(entity);
     }
 
-    public void delete(Integer commentId) {
-        store.deleteComment(commentId);
+    @Override
+    public void delete(Comment entity) {
+        Comment comment1 = em.find(Comment.class, entity.getId());
+        em.remove(comment1);
     }
 
+    @Override
     public void update(Comment entity) {
-        store.updateComment(entity);
+        em.merge(entity);
     }
 
-    public List<Comment> findAllComments() {
-        return store.findAllComments();
+    @Override
+    public void detach(Comment entity) {
+        em.detach(entity);
     }
 
-    public List<Comment> findUserComments(Integer userId){
-        return store.findCommentsByUserId(userId);
-    }
 }

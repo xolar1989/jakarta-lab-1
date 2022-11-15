@@ -66,12 +66,14 @@ public class CommentCreate implements Serializable {
         String viewId = FacesContext.getCurrentInstance().getViewRoot().getViewId();
         System.out.println(userId);
         if (model != null) {
-            Comment comment = Comment.builder()
-                    .content(model.getContent())
-                    .build();
+
             userService.findById(userId)
                     .ifPresent(user1 -> {
-                        userCommentService.createCommentForUser(comment, user1);
+                        Comment comment = Comment.builder()
+                                .content(model.getContent())
+                                .user(user1)
+                                .build();
+                        userCommentService.createCommentForUser(comment);
                     });
 
         }

@@ -9,6 +9,7 @@ import pl.edu.pg.eti.kask.rpg.social.network.service.UserService;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;
+import javax.enterprise.context.control.RequestContextController;
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import java.io.InputStream;
@@ -20,10 +21,13 @@ public class InitData {
 
     private final UserCommentService userCommentService;
 
+    private RequestContextController requestContextController;
+
     @Inject
-    InitData(UserService userService, UserCommentService userCommentService) {
+    InitData(UserService userService, UserCommentService userCommentService, RequestContextController requestContextController) {
         this.userService = userService;
         this.userCommentService = userCommentService;
+        this.requestContextController = requestContextController;
     }
 
     public void contextInitialized(@Observes @Initialized(ApplicationScoped.class) Object init) {
@@ -32,28 +36,13 @@ public class InitData {
 
 
     private synchronized void init(){
+        requestContextController.activate();
+
         User user1 = User.builder()
                 .login("user1")
                 .email("email@dd")
                 .name("michal")
                 .image(getResourceAsByteArray("configuration/avatar/zereni.png"))
-                .build();
-
-        Comment comment1 = Comment.builder()
-                .content("fajny komentarz")
-                .type(CommentType.HATE_COMMENT)
-                .build();
-
-
-        Comment comment2 = Comment.builder()
-                .content("lorem ipsum")
-                .type(CommentType.NORMAL_COMMENT)
-                .build();
-
-
-        Comment comment3 = Comment.builder()
-                .content("eikdmkmksdlsmdksd")
-                .type(CommentType.HATE_COMMENT)
                 .build();
 
         User user2 = User.builder()
@@ -63,26 +52,11 @@ public class InitData {
                 .image(getResourceAsByteArray("configuration/avatar/uhlbrecht.png"))
                 .build();
 
-
-        Comment comment5 = Comment.builder()
-                .content("fajny komentarz user 2")
-                .build();
-
-
-        Comment comment6 = Comment.builder()
-                .content("lorem ipsum user2 ")
-                .build();
-
-
-
-
-
         User user3 = User.builder()
                 .login("user3")
                 .email("email@dd3")
                 .name("andrew")
                 .image(getResourceAsByteArray("configuration/avatar/calvian.png"))
-                .commentsIds(new ArrayList<>())
                 .build();
 
         User user4 = User.builder()
@@ -90,27 +64,67 @@ public class InitData {
                 .email("email@d4")
                 .name("drake")
                 .image(getResourceAsByteArray("configuration/avatar/eloise.png"))
-                .commentsIds(new ArrayList<>())
                 .build();
+
 
         userService.create(user1);
         userService.create(user2);
         userService.create(user3);
         userService.create(user4);
 
-        userCommentService.createCommentForUser(comment1,user1);
-        userCommentService.createCommentForUser(comment2,user1);
-        userCommentService.createCommentForUser(comment3,user1);
+        Comment comment1 = Comment.builder()
+                .content("fajny komentarz")
+                .type(CommentType.HATE_COMMENT)
+                .user(user1)
+                .build();
 
 
-        userCommentService.createCommentForUser(comment5,user2);
-        userCommentService.createCommentForUser(comment6,user2);
+        Comment comment2 = Comment.builder()
+                .content("lorem ipsum")
+                .type(CommentType.NORMAL_COMMENT)
+                .user(user2)
+                .build();
+
+
+        Comment comment3 = Comment.builder()
+                .content("eikdmkmksdlsmdksd")
+                .type(CommentType.HATE_COMMENT)
+                .user(user3)
+                .build();
+
+
+
+        Comment comment5 = Comment.builder()
+                .content("fajny komentarz user 2")
+                .user(user2)
+                .build();
+
+
+        Comment comment6 = Comment.builder()
+                .content("lorem ipsum user2 ")
+                .user(user2)
+                .build();
+
+
+
+
+
+
+
+        userCommentService.createCommentForUser(comment1);
+        userCommentService.createCommentForUser(comment2);
+        userCommentService.createCommentForUser(comment3);
+
+
+        userCommentService.createCommentForUser(comment5);
+        userCommentService.createCommentForUser(comment6);
 
         userService.saveImage(user1);
         userService.saveImage(user2);
         userService.saveImage(user3);
         userService.saveImage(user4);
 
+        requestContextController.deactivate();
     }
 
     @SneakyThrows
